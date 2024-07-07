@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/hello', function () {
+Route::get('hello', function () {
     return "hello laravel";
 });
 
-Route::get('/home', function () {
-    return view('home.home');
-});
+Route::get('home', [BlogPostController::class , 'home'])->name('home');
+Route::get('post/{id}', [BlogPostController::class , 'post'])->name('single.post');

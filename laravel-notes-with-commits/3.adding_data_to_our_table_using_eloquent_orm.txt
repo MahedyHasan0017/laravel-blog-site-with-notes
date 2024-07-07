@@ -1,0 +1,177 @@
+at first we will run php artisan tinker command for goto shell
+$post = new BlogPost();
+giving us an error with this message 
+"Error  Class "BlogPost" not found"
+Now we will run Run "composer dump-autoload" to refresh the autoloader cache and ensure your model is recognized.
+
+$post = new BlogPost(); will create a new instance for BlogPost Model Class and storing it to $post variable 
+now we will assign data to column with $post object 
+
+> $post->title = "first title"
+= "first title"
+
+> $post->content = "first content"
+= "first content"
+
+> $post->save()
+= true
+will create a row will title and content value 
+
+> $post->title = "i'm updated title"
+= "i'm updated title"
+
+> $post->save()
+will update title value of $post object 
+
+
+Now Reading data from our database table named blog_post model name BlogPost 
+
+> BlogPost::find(1) //find method will search data with id = 1 in our blog_posts table and return it 
+[!] Aliasing 'BlogPost' to 'App\Models\BlogPost' for this Tinker session.
+= App\Models\BlogPost {#5359
+    id: 1,
+    title: "i'm updated title",
+    content: "first content",
+    created_at: "2024-07-07 09:03:26",
+    updated_at: "2024-07-07 09:04:57",
+  }
+
+> BlogPost::find(2) //not finding any data with id = 2 . so its returning null value 
+= null
+
+
+$posts = BlogPost::all()
+= Illuminate\Database\Eloquent\Collection {#6045
+    all: [
+      App\Models\BlogPost {#6043
+        id: 1,
+        title: "i'm updated title",
+        content: "first content",
+        created_at: "2024-07-07 09:03:26",
+        updated_at: "2024-07-07 09:04:57",
+      },
+      App\Models\BlogPost {#6042
+        id: 2,
+        title: "second title",
+        content: "second content",
+        created_at: "2024-07-07 09:12:09",
+        updated_at: "2024-07-07 09:12:09",
+      },
+    ],
+  }
+
+  all() method returning an array of objects
+
+  but find() and first methods returning us objects 
+
+  > $post = BlogPost::find(2)
+    = App\Models\BlogPost {#5777
+        id: 2,
+        title: "second title",
+        content: "second content",
+        created_at: "2024-07-07 09:12:09",
+        updated_at: "2024-07-07 09:12:09",
+    }
+
+> $post = BlogPost::first()
+    = App\Models\BlogPost {#5016
+        id: 1,
+        title: "i'm updated title",
+        content: "first content",
+        created_at: "2024-07-07 09:03:26",
+        updated_at: "2024-07-07 09:04:57",
+    }
+> 
+
+$posts->count() //returning us number of posts in our blog_posts table 
+
+
+
+query builder is builder let us build sql queries using object oriented way by fluently calling methods 
+model classes has build in query builder .
+query builder it self is a class named Builder 
+it has methods like "where" , "select" , "join" like sql keywords 
+
+
+now we will create 5 user with factory to apply and understanding query builder methods
+User::factory()->count(5)->create() //this will create five users 
+
+> User::where('id',1)
+= Illuminate\Database\Eloquent\Builder {#5036}
+
+> User::where('id',1)->get() //get method returning array 
+= Illuminate\Database\Eloquent\Collection {#5018
+    all: [
+      App\Models\User {#5051
+        id: 1,
+        name: "Melisa Turner DVM",
+        email: "martin18@example.org",
+        email_verified_at: "2024-07-07 09:22:37",
+        #password: "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+        #remember_token: "uIiMOT1cJI",
+        created_at: "2024-07-07 09:22:37",
+        updated_at: "2024-07-07 09:22:37",
+      },
+    ],
+  }
+
+> User::where('id', '>' ,  2)->orderBy('id','desc')->get();
+
+> User::where('id', '>' ,  2)->orderBy('id','desc')->get(); //returning data array format for get() method orderBy method sorting data and where checking condition id greater then 2 
+= Illuminate\Database\Eloquent\Collection {#5037
+    all: [
+      App\Models\User {#5084
+        id: 5,
+        name: "Miss Gretchen Emmerich II",
+        email: "gpouros@example.com",
+        email_verified_at: "2024-07-07 09:22:37",
+        #password: "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+        #remember_token: "LkX39hwAYt",
+        created_at: "2024-07-07 09:22:37",
+        updated_at: "2024-07-07 09:22:37",
+      },
+      App\Models\User {#5081
+        id: 4,
+        name: "Adriana Jast",
+        email: "veronica.green@example.net",
+        email_verified_at: "2024-07-07 09:22:37",
+        #password: "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+        #remember_token: "etsDienmw2",
+        created_at: "2024-07-07 09:22:37",
+        updated_at: "2024-07-07 09:22:37",
+      },
+      App\Models\User {#5053
+        id: 3,
+        name: "Ms. Linnea Kertzmann III",
+        email: "zena.beahan@example.net",
+        email_verified_at: "2024-07-07 09:22:37",
+        #password: "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+        #remember_token: "toETF2B1hc",
+        created_at: "2024-07-07 09:22:37",
+        updated_at: "2024-07-07 09:22:37",
+      },
+    ],
+  }
+
+> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

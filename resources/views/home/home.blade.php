@@ -6,7 +6,7 @@
 <div class="container pt-4 pb-4">
     <div class="row">
         <div class="col-lg-6">
-        <h5 class="font-weight-bold spanborder"><span>Popular Stories</span></h5>
+            <h5 class="font-weight-bold spanborder"><span>Popular Stories</span></h5>
             <div class="card border-0 mb-4 box-shadow h-xl-300">
                 <div style="background-image: url('templates/assets/img/demo/1.jpg'); height: 150px;    background-size: cover;    background-repeat: no-repeat;"></div>
                 <div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
@@ -70,37 +70,21 @@
     <div class="row justify-content-between">
         <div class="col-md-8">
             <h5 class="font-weight-bold spanborder"><span>All Stories</span></h5>
+            @foreach ($posts as $post)
             <div class="mb-3 d-flex justify-content-between">
                 <div class="pr-3">
                     <h2 class="mb-1 h4 font-weight-bold">
-                        <a class="text-dark" href="./article.html">Nearly 200 Great Barrier Reef coral species also live in the deep sea</a>
+                        <a class="text-dark" href="{{route('single.post',['id' => $post->id])}}"> 
+                            {{$post->title}}</a>
                     </h2>
                     <p>
-                        There are more coral species lurking in the deep ocean that previously thought.
+                        {{ $post->content }}
                     </p>
-                    <div class="card-text text-muted small">
-                        Jake Bittle in SCIENCE
-                    </div>
-                    <small class="text-muted">Dec 12 &middot; 5 min read</small>
                 </div>
-                <img height="120" src="{{ asset('templates/assets/img/demo/blog8.jpg') }}">
             </div>
-            <div class="mb-3 d-flex justify-content-between">
-                <div class="pr-3">
-                    <h2 class="mb-1 h4 font-weight-bold">
-                        <a class="text-dark" href="./article.html">East Antarctica's glaciers are stirring</a>
-                    </h2>
-                    <p>
-                        Nasa says it has detected the first signs of significant melting in a swathe of glaciers in East Antarctica.
-                    </p>
-                    <div class="card-text text-muted small">
-                        Jake Bittle in SCIENCE
-                    </div>
-                    <small class="text-muted">Dec 12 &middot; 5 min read</small>
-                </div>
-                <img height="120" src="{{ asset('templates/assets/img/demo/1.jpg') }}">
-            </div>
-            <div class="mb-3 d-flex justify-content-between">
+            @endforeach
+
+            <!-- <div class="mb-3 d-flex justify-content-between">
                 <div class="pr-3">
                     <h2 class="mb-1 h4 font-weight-bold">
                         <a class="text-dark" href="./article.html">50 years ago, armadillos hinted that DNA wasn’t destiny</a>
@@ -114,7 +98,7 @@
                     <small class="text-muted">Dec 12 &middot; 5 min read</small>
                 </div>
                 <img height="120" src="{{ asset('templates/assets/img/demo/5.jpg') }}">
-            </div>
+            </div> -->
         </div>
         <div class="col-md-4 pl-4">
             <h5 class="font-weight-bold spanborder"><span>Top Authors</span></h5>
