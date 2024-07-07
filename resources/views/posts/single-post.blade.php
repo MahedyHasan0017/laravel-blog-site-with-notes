@@ -1,5 +1,8 @@
 @extends('main.main')
 
+@section('title' , 'Single Post')
+
+
 @section('content')
 
 <div class="container">

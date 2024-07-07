@@ -1,0 +1,23 @@
+adding form with @csrf and submitting best practice table column name and input field name should be same
+
+installing toaster 
+
+run these commands 
+composer require yoeunes/toastr
+php artisan flasher:install
+
+now use in code 
+// Display a success toast with no title
+flash()->success('Operation completed successfully.');
+
+toastr()->success('Data has been saved successfully!');
+
+
+toastr()->error('An error has occurred please try again later.');
+
+
+
+when we will use create then we must enable mass assignment in out BlogPost model 
+with  protected $fillable = ['field-name-1','field-name-2',...] ; 
+
+want to track time then public $timestamps = true should add on model 

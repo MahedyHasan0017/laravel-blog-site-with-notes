@@ -19,4 +19,7 @@ Route::get('hello', function () {
 });
 
 Route::get('home', [BlogPostController::class , 'home'])->name('home');
-Route::get('post/{id}', [BlogPostController::class , 'post'])->name('single.post');
+Route::get('single/post/{id}', [BlogPostController::class , 'post'])->name('single.post');
+Route::get('post/create', [BlogPostController::class , 'post_create'])->name('post.create');
+Route::post('post/store', [BlogPostController::class , 'post_create_store'])->name('post.store');
+
