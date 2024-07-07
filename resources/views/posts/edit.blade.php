@@ -1,6 +1,6 @@
 @extends('main.main')
 
-@section('title' , 'Create Post')
+@section('title' , 'Update Post')
 
 @section('content')
 
@@ -12,13 +12,15 @@
                 Create Post
             </h4>
             <div class="mt-3">
-                <form action="{{route('post.store')}}" method="post">
+
+                <form action="{{route('post.update.store',['id' => $post->id])}}" method="post">
 
                     @csrf
+                    @method('PUT')
                     @include('posts.partials.form')
 
                     <div class="">
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
             </div>

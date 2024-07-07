@@ -77,12 +77,24 @@
             <div class="mb-3 d-flex justify-content-between">
                 <div class="pr-3">
                     <h2 class="mb-1 h4 font-weight-bold">
-                        <a class="text-dark" href="{{route('single.post',['id' => $post->id])}}"> 
+                        <a class="text-dark" href="{{route('single.post',['id' => $post->id])}}">
                             {{$post->title}}</a>
                     </h2>
                     <p>
                         {{ $post->content }}
                     </p>
+                    <div class="mt-3" style="display: flex;">
+                        <div>
+                            <a href="{{ route('post.update',['id' => $post->id]) }}" class="btn btn-secondary">Update</a>
+                        </div>
+                        <div class="ml-3">
+                            <form action="{{ route('post.delete.store',['id' => $post->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
             @endforeach

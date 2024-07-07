@@ -21,3 +21,11 @@ when we will use create then we must enable mass assignment in out BlogPost mode
 with  protected $fillable = ['field-name-1','field-name-2',...] ; 
 
 want to track time then public $timestamps = true should add on model 
+
+
+to make a form input fields reusable 
+
+
+
+
+

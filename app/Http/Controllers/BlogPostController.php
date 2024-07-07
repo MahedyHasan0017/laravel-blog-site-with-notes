@@ -33,7 +33,7 @@ class BlogPostController extends Controller
     {
 
         // return "hello" ; 
-        return view('posts.create') ; 
+        return view('posts.create');
     }
 
     public function post_create_store(StorePost $request)
@@ -52,15 +52,14 @@ class BlogPostController extends Controller
 
         // after mass assignment 
 
-        $post = BlogPost::create($validated) ; 
+        $post = BlogPost::create($validated);
 
-        if($post){
+        if ($post) {
             toastr()->success('Post Created Successfully!');
-            return redirect()->route('single.post',['id' => $post->id]) ; 
-        }
-        else{
+            return redirect()->route('single.post', ['id' => $post->id]);
+        } else {
             toastr()->error('Something Went Wrong!');
-            return redirect()->back() ; 
+            return redirect()->back();
         }
 
 
@@ -76,4 +75,53 @@ class BlogPostController extends Controller
     }
 
 
+    public function post_update($id)
+    {
+
+        // return "hello" ; 
+
+        $post = BlogPost::findOrFail($id);
+
+        return view('posts.edit', [
+            'post' => $post
+        ]);
+    }
+
+    public function post_update_store(StorePost $request, $id)
+    {
+
+
+        // dd($id) ; 
+
+        // return "hello" ; 
+
+        $post = BlogPost::findOrFail($id);
+        $validated = $request->validated();
+        $post->fill($validated);
+        $done = $post->save();
+
+
+        if ($done) {
+            toastr()->success('Post Updated Successfully!');
+            return redirect()->route('single.post', ['id' => $post->id]);
+        } else {
+            toastr()->error('Something Went Wrong!');
+            return redirect()->back();
+        }
+    }
+
+
+    public function post_delete_store(Request $request, $id)
+    {
+        $post = BlogPost::findOrFail($id);
+        $done = $post->delete(); 
+
+        if ($done) {
+            toastr()->success('Post Deleted Successfully!');
+            return redirect()->route('home');
+        } else {
+            toastr()->error('Something Went Wrong!');
+            return redirect()->back();
+        }
+    }
 }
