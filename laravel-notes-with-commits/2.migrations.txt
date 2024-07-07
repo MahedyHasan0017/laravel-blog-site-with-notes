@@ -1,0 +1,6 @@
+Migration : Laravel Migration is an essential feature in Laravel that allows you to create a table in your database. It allows you to modify and share the application's database schema. You can modify the table by adding a new column or deleting an existing column.
+migration class contains two methods, i.e., up() method and down() method. The up() method is used to create the new table, add the new columns or indexes to the database while the down() method is the opposite of the up() method, i.e., it Rollback changes and drops the fields.
+
+
+php artisan make:model BlogPost -mc will create a Model Named BlogPost -m for migration and c for controller 
+now we are writing table column with datatype for BlogPost model in migration file and run migration , obviously after connecting mysql database in env file 

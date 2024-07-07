@@ -1,0 +1,25 @@
+Models: Always singular and PascalCase. E.g., User.
+
+--Naming Model Relationships When defining relationships in your models, use camelCase. For instance, name it publishedLessons(), not published_lessons():
+
+
+Controllers: Typically plural and ending with the word ‘Controller’. E.g., PostsController.
+
+Blade Files: Typically kebab-case and matching their related controllers. E.g., for PostsController, use posts-index.blade.php.
+
+--Avoid: Naming like BookView.blade.php for a show method in the controller.
+--Adopt: Naming patterns such as books/index.blade.php, books/show.blade.php, and so on.
+
+
+Migrations: Descriptive and snake_case, explaining the action. E.g., create_users_table.
+
+
+Route:
+
+Route::get('/posts/{post}', function ($postId) {
+    //
+})->name('posts.show'); ///naming route convention with . 
+
+
+
+
