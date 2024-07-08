@@ -1,0 +1,12 @@
+creating first test using 
+php artisan make:test HomeTest 
+
+it will goto feature test folder 
+
+1.Arrange 
+2.Act 
+3.Assert 
+
+
+
+
