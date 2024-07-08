@@ -1,0 +1,71 @@
+best example for one to one relationship is 
+***user and profile one user has one profile or one profile belongs to one user***
+user table has basic user data and profile table has more data about user 
+
+$table->unsignedBigInteger('author_id')->unique();
+$table->foreign('author_id')->references('id')->on('authors');
+
+practice in tinker 
+
+//assigning data 
+
+$author = new Author()
+$author->save()
+Author::all()
+$pro = new Profile()
+$author->profile()
+Author::all()
+$author->profile->save($pro)
+$pro = new Profile()
+$pro->save()
+$pro->author_id = 1
+$pro->save()
+Profile::all()
+$author = new Author()
+$author->save()
+$profile = new Profile()
+$author->profile()->save($profile)
+$author = Author::create()
+$profile = new Profile()
+$profile->author()->associate($author)->save()
+$profile
+$author
+
+
+//reading data 
+
+
+$pro = Profile::find(2)
+$auth = Author::find(3)
+
+$pro->author()
+$pro->author
+$pro 
+
+$author
+$author = Author::with('profile')->whereKey(1)->first()
+$author = Author::with(['profile','comment'])->whereKey(1)->first()
+
+
+
+
+
+///
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
