@@ -9,13 +9,17 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    public $timestamps = true ; 
+    public $timestamps = true;
 
 
     protected $fillable = [
-        'title' , 
+        'title',
         'content'
     ];
 
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

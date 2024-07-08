@@ -1,0 +1,101 @@
+one to many relationship between two model BlogPost and Comment is
+
+*** one blog post has many comments and one comment belongs to one blog post ***
+
+*** we will alwayes define our foreign key to migration which is creted after***
+
+***at first we will create blog_post then create comments then will define foreign key to comments table***
+
+// $table->unsignedBigInteger('blog_post_id') ; 
+    public function blogPost()
+    {
+        return $this->belongsTo(BlogPost::class);
+    }
+
+    // if 
+    // $table->unsignedBigInteger('post_id') ; 
+    // public function post()
+    // {
+    //     return $this->belongsTo(BlogPost::class);
+    // }
+
+//belongs to method associate() 
+
+///assigning data one to many 
+
+BlogPost::all()
+$bp = BlogPost::find(6)
+$comment = new Comment()
+$comment->content = 'comment-1'
+$bp->comments()->save($comment) //hasMany relation save() method 
+
+$comment = new Comment()
+$comment->blogPost()->associate($bp)
+$comment->blogPost()->associate($bp)->save()
+$comment->content = "comment-2"
+$comment->blogPost()->associate($bp)->save()
+
+
+$comment = new Comment()
+$comment->content = 'comment-3'
+$comment->blog_post_id = 1
+$comment->save()
+
+$comment->blog_post_id = 6
+$comment->save()
+
+$comment->blog_post_id = 5
+$comment->save()
+
+$comment = new Comment()
+$comment2 = new Comment()
+$comment->content = 'abc'
+$comment2->content = 'def'
+$bp = BlogPost::find(5)
+$bp->comments()->saveMany([$comment, $comment2])
+
+
+
+
+//quering from db 
+
+$post = BlogPost::with('comments')->get()
+
+$post = BlogPost::find(5)
+$post->comments
+
+$comment = Comment::find(2)
+$comment->blogPost
+$comment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
