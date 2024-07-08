@@ -27,6 +27,7 @@ class PostTest extends TestCase
         //Act 
         $response = $this->get('/home');
         $response->assertSeeText('title-1');
+        $response->assertSeeText('No Comment Yet');
 
         $this->assertDatabaseHas('blog_posts', [
             'title' => 'title-1'
@@ -99,7 +100,7 @@ class PostTest extends TestCase
     {
         $post = $this->creatingDummyBlogPost();
         $this->assertDatabaseHas('blog_posts' , $post->toArray()) ; 
-        $this->delete('post/delete/4')->assertStatus(302);
+        $this->delete('post/delete/6')->assertStatus(302);
         $this->assertDatabaseMissing('blog_posts',$post->toArray()) ; 
     }
 

@@ -1,0 +1,35 @@
+
+
+load eager loading with "with" method for faster and efficient query
+
+BlogPost::all()
+all blog post with and without comments 
+
+BlogPost::has('comments')->get()
+blog posts with comments 
+
+BlogPost::has('comments',">=" , 2)->get()
+posts with more then 2 comments 
+
+
+BlogPost::whereHas('comments',function($query){$query->where('content','like','%abc%');})->get()
+posts which has a comment with text 'abc' 
+
+
+BlogPost::doesntHave('comments')->get()
+posts without comment 
+
+
+BlogPost::whereDoesntHave('comments',function($query){$query->where('content','like','%abc%')
+;})->get()
+
+posts which has a comment without text 'abc' 
+
+
+BlogPost::withCount('comments')->get()
+with count of comments number
+these will create a extrafield named "comments_count"
+
+
+
+

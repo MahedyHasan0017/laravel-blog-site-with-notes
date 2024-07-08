@@ -83,6 +83,14 @@
                     <p>
                         {{ $post->content }}
                     </p>
+                    <p>
+                        @if ($post->comments_count)
+                            numbar of comment {{ $post->comments_count }}
+                        @else  
+                            No Comment Yet
+                        @endif
+                        
+                    </p>
                     <div class="mt-3" style="display: flex;">
                         <div>
                             <a href="{{ route('post.update',['id' => $post->id]) }}" class="btn btn-secondary">Update</a>

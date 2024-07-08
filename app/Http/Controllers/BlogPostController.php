@@ -11,7 +11,10 @@ class BlogPostController extends Controller
     public function home()
     {
 
-        $posts = BlogPost::all();
+        // $posts = BlogPost::all();
+
+        $posts = BlogPost::withCount('comments')->get() ; 
+        //these will create a extra column named comments_count 
 
         return view('home.home', [
             'posts' => $posts
