@@ -15,6 +15,32 @@
             <p>
                 {{ $post->content }}
             </p>
+            <p>
+                Added : {{ $post->created_at->diffForHumans() }}
+            </p>
+            <p>
+                @if((new Carbon\Carbon())->diffInMinutes($post->created_at) < 5) <strong>
+                    New
+                    </strong>
+                    @endif
+            </p>
+            <div>
+                <h4>Comments</h4>
+                <div>
+                    @forelse ($post->comments as $comment)
+                    <div>
+                        <p>
+                            {{ $comment->content }} ,
+                        </p>
+                        <p> added {{ $comment->created_at->diffForHumans() }}</p>
+                    </div>
+                    @empty
+                    <p>
+                        No Comment Yet !
+                    </p>
+                    @endforelse
+                </div>
+            </div>
         </div>
     </div>
 </div>
