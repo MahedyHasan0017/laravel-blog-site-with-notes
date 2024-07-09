@@ -14,6 +14,27 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Main CSS -->
     <link href=" {{ asset('./templates/assets/css/main.css') }} " rel="stylesheet" />
+
+    <style>
+        .dropdown-menu {
+            left: -61%;
+        }
+
+        .dropdown-menu:before {
+            left: 128px;
+        }
+
+        .btn__to__text,
+        .btn__to__text:focus,
+        .btn__to__text:active {
+            background: transparent;
+            border: none;
+            outline: none;
+            margin-left: -5px;
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -34,29 +55,49 @@ NAVBAR
                     <li class="nav-item">
                         <a class="nav-link" href="./article.html">Culture</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./article.html">Tech</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./article.html">Politics</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./article.html">Health</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./article.html">Collections</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./docs.html">Template <span class="badge badge-secondary">docs</span></a>
-                    </li>
+
                 </ul>
                 <ul class="navbar-nav ml-auto d-flex align-items-center">
+                    <!-- <li class="nav-item highlight">
+                        
+                    </li> -->
+
                     <li class="nav-item highlight">
-                        <a class="nav-link" href="https://www.wowthemes.net/mundana-free-html-bootstrap-template/">Get this Theme</a>
+
+                        <div class="btn-group dropmiddle">
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                @if (Auth::user())
+                                {{ Auth::user()->name }}
+                                @else
+                                login
+                                @endif
+
+                            </button>
+
+                            @if (Auth::user())
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('profile.edit')}}">Profile</a>
+                                <a class="dropdown-item" href="#">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+
+                                        <button class="btn__to__text" style="cursor: pointer;" type="submit">Log out</button>
+                                    </form>
+                                </a>
+                            </div>
+                            @else
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{route('login')}}">login</a>
+
+                            </div>
+                            @endif
+
+
+                        </div>
                     </li>
+
+
+
                 </ul>
             </div>
         </div>

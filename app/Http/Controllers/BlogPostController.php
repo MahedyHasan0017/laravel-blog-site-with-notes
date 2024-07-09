@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class BlogPostController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['post_create','post_update','post_delete_store']);
+    }
+
+
     public function home()
     {
 
