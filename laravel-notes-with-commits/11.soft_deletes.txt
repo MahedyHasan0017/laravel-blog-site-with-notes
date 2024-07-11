@@ -1,0 +1,40 @@
+adding this line inside 
+
+class BlogPost extends Model {
+
+use SoftDeletes ; 
+
+public static function boot(){
+        parent::boot() ; 
+
+        //this method will run before blogPost model instance post deleted
+        // at first it will delete comments then it will delete post 
+        static::deleting(function(BlogPost $blogPost){
+            $blogPost->comments()->delete() ; 
+        });
+    }
+
+}
+
+deleting a post with id number : 3  // we will notice that deleted_at field is not null of this post 
+ then finding deleted post with
+
+ $post = BlogPost::onlyTrashed()->find(3)
+ 
+ and restoring it  using 
+ $post->restore() 
+
+now the post will restore and deleted_at value will be null 
+
+$post->forceDelete() ; 
+//this will delete post from database permanently 
+
+
+
+
+
+
+
+
+
+

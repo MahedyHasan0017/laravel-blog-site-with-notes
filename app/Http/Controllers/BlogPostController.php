@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BlogPostController extends Controller
 {
@@ -12,7 +14,7 @@ class BlogPostController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->only(['post_create','post_update','post_delete_store']);
+        $this->middleware('auth')->only(['post_create', 'post_update', 'post_delete_store']);
     }
 
 
@@ -21,7 +23,7 @@ class BlogPostController extends Controller
 
         // $posts = BlogPost::all();
 
-        $posts = BlogPost::withCount('comments')->get() ; 
+        $posts = BlogPost::withCount('comments')->get();
         //these will create a extra column named comments_count 
 
         return view('home.home', [
@@ -63,8 +65,10 @@ class BlogPostController extends Controller
 
         // after mass assignment 
 
-        $post = BlogPost::create($validated);
+        $validated += ["user_id" => Auth::user()->id] ; 
 
+        $post = BlogPost::create($validated);
+     
         if ($post) {
             toastr()->success('Post Created Successfully!');
             return redirect()->route('single.post', ['id' => $post->id]);
@@ -93,6 +97,14 @@ class BlogPostController extends Controller
 
         $post = BlogPost::findOrFail($id);
 
+
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403,'This is abort message : you cannot update others authors posts');
+        // }
+
+        $this->authorize('update-post',$post) ; 
+
+
         return view('posts.edit', [
             'post' => $post
         ]);
@@ -102,11 +114,16 @@ class BlogPostController extends Controller
     {
 
 
-        // dd($id) ; 
 
-        // return "hello" ; 
 
         $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403,'This is abort message : you cannot update others authors posts');
+        // }
+
+        $this->authorize('update-post',$post) ; 
+
         $validated = $request->validated();
         $post->fill($validated);
         $done = $post->save();
@@ -125,7 +142,15 @@ class BlogPostController extends Controller
     public function post_delete_store(Request $request, $id)
     {
         $post = BlogPost::findOrFail($id);
-        $done = $post->delete(); 
+
+
+        // if (Gate::denies('delete-post', $post)) {
+        //     abort(403,'This is abort message : you cannot delete others authors posts');
+        // }
+
+        $this->authorize('delete-post',$post) ; 
+
+        $done = $post->delete();
 
         if ($done) {
             toastr()->success('Post Deleted Successfully!');
