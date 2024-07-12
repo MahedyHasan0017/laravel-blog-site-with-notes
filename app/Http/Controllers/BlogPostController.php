@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -23,18 +24,32 @@ class BlogPostController extends Controller
 
         // $posts = BlogPost::all();
 
-        $posts = BlogPost::withCount('comments')->get();
+        $posts = BlogPost::latest()->withCount('comments')->get();
+        $most_commenteds = BlogPost::mostCommented()->skip(1)->take(3)->get() ; 
+        $most_popular = BlogPost::mostCommented()->take(1)->first() ; 
+        $most_active_authors = User::withMostBlogPost()->take(5)->get() ; 
+        $most_active_authors_in_last_month = User::withMostBlogPostsInLastMonth()->take(5)->get() ; 
+        // dd($most_active_authors) ; 
+        // dd($most_popular) ; 
         //these will create a extra column named comments_count 
 
         return view('home.home', [
-            'posts' => $posts
+            'posts' => $posts,
+            'most_commenteds' => $most_commenteds ,
+            'most_popular' => $most_popular ,
+            'most_active_authors' => $most_active_authors,
+            'most_active_authors_in_last_month' => $most_active_authors_in_last_month
         ]);
     }
 
     public function post($id)
     {
 
-        $post = BlogPost::findOrFail($id);
+        // $post = BlogPost::with(['comments' => function($query){
+        //     return $query->latest() ; 
+        // }])->findOrFail($id);
+
+        $post = BlogPost::with('comments')->findOrFail($id);
 
         return view('posts.single-post', [
             'post' => $post

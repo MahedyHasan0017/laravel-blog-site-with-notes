@@ -19,7 +19,8 @@ class CommentFactory extends Factory
     {
         $faker = Faker::create();
         return [
-            'content' => $faker->text()
+            'content' => $faker->text(),
+            'created_at' => $faker->dateTimeBetween('-3 months')
         ];
     }
 }

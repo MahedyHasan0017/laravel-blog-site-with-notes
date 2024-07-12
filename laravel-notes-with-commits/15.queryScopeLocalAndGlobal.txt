@@ -1,0 +1,57 @@
+in our post controller we can sort those blog posts
+now we will create a new namespace inside app folder called Scopes and creating a file named LatestScope.php
+
+writing our global query in LatestScope.php
+
+<?php
+
+namespace App\Scopes ;
+
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
+
+class LatestScope implements Scope{
+public function apply(Builder $builder , Model $model){
+$builder->orderBy('created_at','desc')                  ;
+}
+}
+
+now in our BlogPost model inside the boot() static method we will define the scope, which will apply for all
+in our BlogPost model and boot() method
+
+static::addGlobalScope(new LatestScope) ;
+
+now we will created_at date time between with dateTimeBetween('-3 months')
+
+after refreshing migrations and seeding db will will found that post are sorted but comments are not sorted properly
+we should tell comments model about our global LatestScope with addGlobalScope() method
+
+adding this boot method in our Comment model
+
+public static function boot(){
+parent::boot()                                                      ;
+static::addGlobalScope(new LatestScope)                             ;
+}
+save and refreshing and the result is comments will sorted properly
+
+best practice is using localQuery scope now we will implements local Query scope in our BlogPost model
+
+at first commenting this //static::addGlobalScope(new LatestScope) ;
+
+adding this function in our Blost.php model for local query scope
+
+//its using method name will be latest() in controller
+public function scopeLatest(Builder $query){
+return $query->orderBy('created_at','desc')            ;
+}
+and calling it to controller with its name
+
+now we will see that posts are sorted but comments are not , our task is sort comments using local query scope
+in Comment mode
+
+// $post = BlogPost::with(['comments' => function($query){
+// return $query->latest()                                 ;
+// }])->findOrFail($id) ;
+
+we can also setting this in one to many relationship method named comments() with ->latest() method adding 

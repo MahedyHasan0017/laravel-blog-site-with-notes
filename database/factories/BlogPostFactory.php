@@ -20,7 +20,8 @@ class BlogPostFactory extends Factory
         $faker = Faker::create();
         return [
             "title" => $faker->sentence(10) , 
-            'content' => $faker->paragraph(5,true)
+            'content' => $faker->paragraph(5,true),
+            'created_at' => $faker->dateTimeBetween('-3 months')
         ]; 
     }
 }

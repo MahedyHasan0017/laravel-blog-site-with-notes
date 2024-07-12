@@ -32,6 +32,11 @@
             outline: none;
             margin-left: -5px;
         }
+
+        .clear{
+            clear: both ;
+        }
+
     </style>
 
 

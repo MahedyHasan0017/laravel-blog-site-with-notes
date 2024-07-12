@@ -3,6 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+// use Illuminate\Contracts\Database\Query\Builder;
+
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -41,6 +45,21 @@ class User extends Authenticatable
 
     public function blogPost(){
         return $this->hasMany(BlogPost::class) ; 
+    }
+
+
+    //User model targeting blog_posts table with blogPost() method and withcount will generate a field named blog_post_count 
+    // we will sort it in decending order respect to blog_post_count field  
+
+
+    public function scopeWithMostBlogPost(Builder $query){
+        return $query->withCount('blogPost')->orderBy('blog_post_count','desc') ; 
+    }
+
+    public function scopeWithMostBlogPostsInLastMonth(Builder $query){
+        return $query->withCount(['blogPost' => function(Builder $query){
+            $query->whereBetween('created_at',[now()->subMonth(1) , now()]) ; 
+        }])->having('blog_post_count' , '>=' ,  2)->orderBy('blog_post_count','desc') ; 
     }
 
 

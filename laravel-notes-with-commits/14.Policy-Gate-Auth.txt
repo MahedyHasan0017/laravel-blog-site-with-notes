@@ -1,0 +1,9 @@
+for creating a policy 
+php artisan make:policy BlogPostPolicy
+
+php artisan make:policy BlogPostPolicy --model=BlogPost //for BlogPost model
+
+
+now we have to register our policies 
+
+
