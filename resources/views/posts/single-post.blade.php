@@ -15,17 +15,22 @@
             <p>
                 {{ $post->content }}
             </p>
+            @updated(['date' => $post->created_at , 'name' => $post->user->name])
+            @endupdated 
             <p>
-                Added : {{ $post->created_at->diffForHumans() }}
-            </p>
-            <p>
-                @if((new Carbon\Carbon())->diffInMinutes($post->created_at) < 5) <strong>
-                    New
-                    </strong>
+                @if((new Carbon\Carbon())->diffInMinutes($post->created_at) < 5) 
+                    @badge
+                        New Blog Post!
+                    @endbadge
                     @endif
             </p>
             <div>
                 <h4>Comments</h4>
+                <div>
+                    @badge
+                    Comments !
+                    @endbadge
+                </div>
                 <div>
                     @forelse ($post->comments as $comment)
                     <div>
@@ -33,6 +38,8 @@
                             {{ $comment->content }} ,
                         </p>
                         <p> added {{ $comment->created_at->diffForHumans() }}</p>
+                        @updated(['date' => $post->created_at])
+                        @endupdated 
                     </div>
                     @empty
                     <p>

@@ -80,7 +80,12 @@
                     <p>
                         {{ $post->content }}
                     </p class="text-muted">
-                    <p> Added in {{$post->created_at->diffForHumans()}} by {{ $post->user->name }} </p>
+                    <!-- <p> Added in {{$post->created_at->diffForHumans()}} by {{ $post->user->name }} </p> -->
+
+
+                    @updated(['date' => $post->created_at , 'name' => $post->user->name])
+                    @endupdated 
+
                     <p>
                         @if ($post->comments_count)
                         numbar of comment {{ $post->comments_count }}
