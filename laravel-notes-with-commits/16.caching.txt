@@ -1,0 +1,12 @@
+always quering data from database can be cause of slow performance of our application.
+to solve this problem we have a option named caching , caching is a secondary storage 
+caching store data , and return data from it respect to query, so that direct quering to database can be reduce 
+and performance of application be faster 
+
+how caching works caching is the middle state of our application 
+first state is controller second is cache and last is database
+
+controller request data to database at first request go to cache if it finds
+expected data then immidiately return data 
+if request not find expected data then it will goto to data base table and fetch data and return 
+
