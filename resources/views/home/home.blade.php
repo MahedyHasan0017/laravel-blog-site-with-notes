@@ -84,7 +84,7 @@
 
 
                     @updated(['date' => $post->created_at , 'name' => $post->user->name])
-                    @endupdated 
+                    @endupdated
 
                     <p>
                         @if ($post->comments_count)
@@ -95,9 +95,13 @@
 
                     </p>
                     <div class="mt-3" style="display: flex;">
+                        @can('update' , $post)
                         <div>
                             <a href="{{ route('post.update',['id' => $post->id]) }}" class="btn btn-secondary">Update</a>
                         </div>
+                        @endcan
+
+                        @can('delete',$post)
                         <div class="ml-3">
                             <form action="{{ route('post.delete.store',['id' => $post->id]) }}" method="POST">
                                 @csrf
@@ -105,6 +109,7 @@
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </div>
+                        @endcan
                     </div>
                 </div>
             </div>

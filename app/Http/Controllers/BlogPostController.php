@@ -117,7 +117,9 @@ class BlogPostController extends Controller
         //     abort(403,'This is abort message : you cannot update others authors posts');
         // }
 
-        $this->authorize('update-post',$post) ; 
+        // $this->authorize('posts.update',$post) ; 
+
+        $this->authorize('update',$post) ; 
 
 
         return view('posts.edit', [
@@ -137,7 +139,7 @@ class BlogPostController extends Controller
         //     abort(403,'This is abort message : you cannot update others authors posts');
         // }
 
-        $this->authorize('update-post',$post) ; 
+        $this->authorize('update',$post) ; 
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -163,7 +165,8 @@ class BlogPostController extends Controller
         //     abort(403,'This is abort message : you cannot delete others authors posts');
         // }
 
-        $this->authorize('delete-post',$post) ; 
+        // $this->authorize('posts.delete',$post) ; 
+        $this->authorize('delete',$post) ; 
 
         $done = $post->delete();
 
