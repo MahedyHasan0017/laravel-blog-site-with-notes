@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('home', [BlogPostController::class, 'home'])->name('home');
-Route::get('single/post/{id}', [BlogPostController::class, 'post'])->name('single.post');
+Route::get('single/post/{id}', [BlogPostController::class, 'single_post'])->name('single.post');
 Route::get('post/create', [BlogPostController::class, 'post_create'])->name('post.create');
 Route::post('post/create/store', [BlogPostController::class, 'post_create_store'])->name('post.store');
 

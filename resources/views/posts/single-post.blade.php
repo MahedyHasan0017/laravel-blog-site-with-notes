@@ -24,6 +24,12 @@
                     @endbadge
                     @endif
             </p>
+
+            <p> 
+                Currently readed by {{$counter}} people 
+            </p>
+
+
             <div>
                 <h4>Comments</h4>
                 <div>

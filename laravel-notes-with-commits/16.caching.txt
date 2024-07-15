@@ -10,3 +10,27 @@ controller request data to database at first request go to cache if it finds
 expected data then immidiately return data 
 if request not find expected data then it will goto to data base table and fetch data and return 
 
+
+some basic caching methods 
+
+Cache::put('data','hello from cache');
+Cache::has('data2') ; 
+Cache::has('data') ; 
+Cache::get('data') ; 
+Cache::get('data2','hello from data-2') ; 
+
+
+> Cache::increment('counter')
+= 1
+
+> Cache::increment('counter')
+= 2
+
+> Cache::increment('counter')
+= 3
+
+> Cache::decrement('counter')
+= 2
+
+
+
