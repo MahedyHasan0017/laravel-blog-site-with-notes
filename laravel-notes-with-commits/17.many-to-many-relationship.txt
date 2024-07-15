@@ -1,0 +1,88 @@
+many to many relationship between post and tags
+one BlogPost can have many Tags
+one Tag associate with many BlogPosts
+
+we need a third table named pivot table to establish many to many relationship
+between BlogPost and Tag table
+
+the convention to make a pivot table is name will be started with lexographical order
+such as this pivot table name will be blog_post_tag because blog_post starts with 'b' comes first then t , tag is started with 't'
+
+blog_post_id of blog_posts table
+tag_id of tags table
+
+php artisan make:model Tags -mc
+php artisan make:migration CreateBlogPostTagTable
+
+pivot table up() method
+
+public function up(): void
+{
+Schema::create('blog_post_tag', function (Blueprint $table) {
+$table->id() ;
+$table->unsignedBigInteger('blog_post_id')->index()                                      ;
+$table->foreign('blog_post_id')->references('id')->on('blog_posts')->onDelete('cascade') ;
+
+$table->unsignedBigInteger('tag_id')->index()                                ;
+$table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade') ;
+
+$table->timestamps() ;
+}) ;
+}
+
+BlogPost Model
+
+public function tags(){
+return $this->belongsToMany(Tags::class) ;
+}
+
+Tags Model
+
+public function blogPosts(){
+return $this->belongsToMany(BlogPost::class) ;
+}
+
+$tag1 = new Tags()
+$tag1->name = 'science'
+$tag1->save()
+
+$tag2 = new Tags()
+$tag2->name = 'environment'
+$tag2->save()
+
+$post = BlogPost::find(41)
+$post->tags()->attach($tag1)
+$post->tags()->attach([$tag1,$tag2]) //id only when array
+$post->tags()->attach([$tag1->id,$tag2->id])
+
+now we notice then repeatation of same rows with attach() method
+
+to solve this problem we will use sync() method
+
+$tag3 = new Tags()
+$tag3->name = 'tag-3'
+$tag3->save()
+
+$post->tags()->sync([$tag1->id,$tag2->id,$tag3->id])
+
+post->tags()->sync([$tag1->id,$tag2->id,$tag3->id])
+= [
+"attached" => [
+9,
+],
+"detached" => [],
+"updated" => [],
+]
+
+$post->tags()->sync([$tag1->id,$tag2->id]) //this query detached means it update and remove tag3->id from $post = 41 
+= [
+"attached" => [],
+"detached" => [
+3 => 9,
+],
+"updated" => [],
+]
+
+$post->tags()->detach($tag1->id) //will detach from blogpost to tags 
+
+$post->tags()->sync([]) //it will detact everything 

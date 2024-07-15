@@ -33,6 +33,11 @@ class BlogPost extends Model
         return $this->belongsTo(User::class) ; 
     }
 
+    public function tags(){
+        return $this->belongsToMany(Tags::class) ; 
+    }
+
+
     //its using method name will be latest() in controller 
     public function scopeLatest(Builder $query){
         return $query->orderBy('created_at','desc') ; 
