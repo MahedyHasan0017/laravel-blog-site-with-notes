@@ -20,3 +20,14 @@
         @enderror
     </div>
 </div>
+
+<div class="my-3">
+    <input type="file" name="thumbnail" id="title" class="form-control-file" placeholder="upload file">
+    <div>
+        @error('thumbnail')
+
+        {{ $message }}
+
+        @enderror
+    </div>
+</div>

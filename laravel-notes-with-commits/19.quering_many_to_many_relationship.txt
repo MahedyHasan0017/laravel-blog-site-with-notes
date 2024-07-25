@@ -1,0 +1,15 @@
+$post->tags()->sync([10,11])
+$post->tags
+
+$tag = Tags::find(10)
+$tags->blogPost
+$tag->blogPosts
+
+$post1 = BlogPost::find(42)
+$post1->tags()->sync([10,11])
+$tag = Tags::find(10)
+$tag->blogPosts
+$tag->blogPosts->first()
+
+
+

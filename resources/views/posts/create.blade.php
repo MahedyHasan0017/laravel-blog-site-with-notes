@@ -12,7 +12,7 @@
                 Create Post
             </h4>
             <div class="mt-3">
-                <form action="{{route('post.store')}}" method="post">
+                <form action="{{route('post.store')}}" method="POST" enctype="multipart/form-data">
 
                     @csrf
                     @include('posts.partials.form')

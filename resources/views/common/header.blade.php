@@ -118,7 +118,7 @@ HEADER
             <div class="pl-4 pr-0 h-100 tofront">
                 <div class="row justify-content-between">
                     <div class="col-md-6 pt-6 pb-6 align-self-center">
-                        <h1 class="secondfont mb-3 font-weight-bold">Mhdy is a professional blogging build with Laravel</h1>
+                        <h1 class="secondfont mb-3 font-weight-bold">Mhdy is a professional blogging app build with Laravel</h1>
                         <p class="mb-3">
                             Beautifully crafted with the latest technologies, SASS & Bootstrap 4.1.3, Mundana is the perfect design for your professional blog. Homepage, post article and category layouts available.
                         </p>

@@ -11,11 +11,16 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id','content'] ; 
 
     // $table->unsignedBigInteger('blog_post_id') ; 
     public function blogPost()
     {
         return $this->belongsTo(BlogPost::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class) ; 
     }
 
     // if 

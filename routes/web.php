@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\PostCommentController;
+use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +22,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return redirect()->route('home') ; 
+    return redirect()->route('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -44,7 +46,12 @@ Route::put('post/update/{id}/store', [BlogPostController::class, 'post_update_st
 Route::delete('post/delete/{id}', [BlogPostController::class, 'post_delete_store'])->name('post.delete.store');
 
 
+Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
+
+
+Route::post('post/{post}/comments', [PostCommentController::class, 'store'])->name('post.comment.store');
+// Route::resource('post.comments', 'PostCommentController')->only(['store']);
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -13,7 +13,7 @@
             </h4>
             <div class="mt-3">
 
-                <form action="{{route('post.update.store',['id' => $post->id])}}" method="post">
+                <form action="{{route('post.update.store',['id' => $post->id])}}" method="POST" enctype="multipart/form-data">
 
                     @csrf
                     @method('PUT')

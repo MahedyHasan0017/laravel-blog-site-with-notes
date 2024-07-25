@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class BlogPostController extends Controller
 {
@@ -25,26 +27,11 @@ class BlogPostController extends Controller
 
         // $posts = BlogPost::all(); 
 
-        $most_commenteds = Cache::remember('blog-post-commented', now()->addSeconds(5), function () {
-            // return BlogPost::mostCommented()->skip(1)->take(3)->get() ; 
-            return BlogPost::mostCommented()->skip(1)->take(3)->get();
-        });
-
-        $most_popular = Cache::remember('users-most-active', now()->addSeconds(20), function () {
-            return BlogPost::mostCommented()->take(1)->first();
-        });
-
-        $most_active_authors = Cache::remember('users-most-active-authors', now()->addSeconds(20), function () {
-            return User::withMostBlogPost()->take(5)->get();
-        });
-
-        $most_active_authors_in_last_month = Cache::remember('users-most-active-last-month', now()->addSeconds(20), function () {
-            return User::withMostBlogPostsInLastMonth()->take(5)->get();
-        });
 
 
+        $posts = BlogPost::latestWithRelations()->get();
 
-        $posts = BlogPost::latest()->withCount('comments')->with('user')->get();
+        // $posts = BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get();
         // $most_commenteds = BlogPost::mostCommented()->skip(1)->take(3)->get() ; 
         // $most_popular = BlogPost::mostCommented()->take(1)->first() ; 
         // $most_active_authors = User::withMostBlogPost()->take(5)->get();
@@ -55,10 +42,6 @@ class BlogPostController extends Controller
 
         return view('home.home', [
             'posts' => $posts,
-            'most_commenteds' => $most_commenteds,
-            'most_popular' => $most_popular,
-            'most_active_authors' => $most_active_authors,
-            'most_active_authors_in_last_month' => $most_active_authors_in_last_month
         ]);
     }
 
@@ -72,9 +55,13 @@ class BlogPostController extends Controller
         // $post = BlogPost::with('comments')->findOrFail($id);
 
 
-        $post = Cache::remember('blog-post-{$id}', 60, function () use ($id) {
-            return BlogPost::with('comments')->findOrFail($id);
-        });
+        // $post = Cache::remember('blog-post-{$id}', 60, function () use ($id) {
+        //     return BlogPost::with('comments')->with('user')->findOrFail($id);
+        // });
+
+        $post =  BlogPost::with('comments')->with('tags')->with('user')->with('comments.user')->findOrFail($id);
+
+        // $post =  BlogPost::with(['comments','tags','user','comments.user'])->findOrFail($id);
 
         $sessionId = session()->getId();
         $counterKey = 'blog-post-{$id}-counter';
@@ -144,7 +131,21 @@ class BlogPostController extends Controller
 
         $post = BlogPost::create($validated);
 
+
         if ($post) {
+
+
+            if ($request->hasFile('thumbnail')) {
+                $file = $request->file('thumbnail');
+                $link = $file->store('public/thumbnails');
+                $path = str_replace('public', 'storage', $link);
+                $post->image()->save(
+                    Image::create([
+                        'path' => $path,
+                        'blog_post_id' => $post->id
+                    ])
+                );
+            }
             toastr()->success('Post Created Successfully!');
             return redirect()->route('single.post', ['id' => $post->id]);
         } else {

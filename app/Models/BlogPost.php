@@ -34,7 +34,11 @@ class BlogPost extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tags::class) ; 
+        return $this->belongsToMany(Tags::class)->withTimestamps() ; 
+    }
+
+    public function image(){
+        return $this->hasMany(Image::class) ; 
     }
 
 
@@ -50,7 +54,12 @@ class BlogPost extends Model
 
         //comments count will generate a field named "comments_count" 
 
-        return $query->withCount('comments')->orderBy('comments_count','desc') ; 
+        return $query->withCount('comments')->with('user')->orderBy('comments_count','desc') ; 
+    }
+
+
+    public function scopeLatestWithRelations(Builder $query){
+        return $query->latest()->withCount('comments')->with('user')->with('tags');
     }
 
 
@@ -58,7 +67,7 @@ class BlogPost extends Model
         parent::boot() ; 
 
 
-        // static::addGlobalScope(new LatestScope) ; 
+        static::addGlobalScope(new LatestScope) ; 
 
         //this method will run before blogPost model instance post deleted
         // at first it will delete comments then it will delete post 
@@ -68,7 +77,7 @@ class BlogPost extends Model
 
 
         static::updating(function(BlogPost $blogPost){
-            Cache::forget('blog-post-{$id}') ; 
+            Cache::forget('blog-post-{$blogPost->id}') ; 
         });
 
     }

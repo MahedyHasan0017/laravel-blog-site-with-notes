@@ -47,6 +47,10 @@ class User extends Authenticatable
         return $this->hasMany(BlogPost::class) ; 
     }
 
+    public function comments(){
+        return $this->hasMany(Comment::class) ; 
+    }
+
 
     //User model targeting blog_posts table with blogPost() method and withcount will generate a field named blog_post_count 
     // we will sort it in decending order respect to blog_post_count field  

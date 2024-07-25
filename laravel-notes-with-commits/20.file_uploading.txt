@@ -1,0 +1,82 @@
+must be add this for uploading files
+<form action="{{route('post.store')}}" method="POST" enctype="multipart/form-data">
+</form>
+
+must check env file contain this line
+FILESYSTEM_DRIVER=public
+
+
+must change this 
+
+    'default' => env('FILESYSTEM_DISK', 'local'),
+
+    'default' => env('FILESYSTEM_DISK', 'public'), //local to public in config/filesystems.php 
+
+
+
+
+file handing method in laravel
+
+dump($request->hasFile('thumbnail')); //will return true/false check file with name thumbnail exists or not
+
+if ($request->hasFile('thumbnail')) {
+$file = $request->file('thumbnail'); //will take total file
+// dump($file->mimeType)                                    ; // will throw an error
+dump($file->getMimeType())                                  ; // will return file type or format
+dump($file->getClientOriginalExtension())                   ; // will return file extension
+
+$file->store('thumbnails') ;
+}
+
+this will upload file in storage , but we need to uplaod file in public folder so that user can view uploaded files
+
+Run this command "php artisan storage:link"
+
+INFO The [public/storage] link has been connected to [storage/app/public].
+
+this will link to storage with public folder
+
+now modified the code
+
+if ($request->hasFile('thumbnail')) {
+$file = $request->file('thumbnail');
+// dump($file->mimeType)                     ; // will throw an error
+// dump($file->getMimeType())                ; // will return file type or format
+// dump($file->getClientOriginalExtension()) ; // will return file extension
+
+// $file->store('thumbnails') ;
+
+$name1 = $file->storeAs("public/thumbnails","888".".".$file->guessExtension())                          ;
+$name2 = Storage::disk('local')->putFileAs('public/thumbnails',$file,'555'.".".$file->guessExtension()) ;
+
+dump(Storage::url($name1))                ;
+dump(Storage::disk('local')->url($name2)) ;
+
+}
+
+///uploading file and save in one to many related table named Image 
+
+$post = BlogPost::create($validated) ;
+
+if ($post) {
+
+    if ($request->hasFile('thumbnail')) {
+        $file = $request->file('thumbnail');
+        $path = $file->store('public/thumbnails') ;
+        $post->images()->save(
+            Image::create([
+            'path' => $path ,
+            'blog_post_id' => $post->id
+            ])
+        );
+    }
+
+    toastr()->success('Post Created Successfully!');
+    return redirect()->route('single.post', ['id' => $post->id]) ;
+} 
+else {
+    toastr()->error('Something Went Wrong!');
+    return redirect()->back() ;
+}
+
+
