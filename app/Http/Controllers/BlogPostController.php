@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,13 +49,6 @@ class BlogPostController extends Controller
     public function single_post($id)
     {
 
-        // $post = BlogPost::with(['comments' => function($query){
-        //     return $query->latest() ; 
-        // }])->findOrFail($id);
-
-        // $post = BlogPost::with('comments')->findOrFail($id);
-
-
         // $post = Cache::remember('blog-post-{$id}', 60, function () use ($id) {
         //     return BlogPost::with('comments')->with('user')->findOrFail($id);
         // });
@@ -85,18 +79,13 @@ class BlogPostController extends Controller
         }
 
         $usersUpdate[$sessionId] = $now;
-
         Cache::forever($usersKey, $usersUpdate);
-
         if (!Cache::has($counterKey)) {
             Cache::forever($counterKey, 1);
         } else {
             Cache::increment($counterKey, $difference);
         }
-
-
         $counter = Cache::get($counterKey);
-
         return view('posts.single-post', [
             'post' => $post,
             'counter' => $counter
@@ -113,27 +102,11 @@ class BlogPostController extends Controller
 
     public function post_create_store(StorePost $request)
     {
-        // dd($request->all()) ; 
 
         $validated = $request->validated(); // validated data will returned as array
-
-
-        // $post = new BlogPost() ; 
-        // $post->title = $validated['title'] ; 
-        // $post->content = $validated['content'] ; 
-        // $post->save() ; 
-
-
-
-        // after mass assignment 
-
         $validated += ["user_id" => Auth::user()->id];
-
         $post = BlogPost::create($validated);
-
-
         if ($post) {
-
 
             if ($request->hasFile('thumbnail')) {
                 $file = $request->file('thumbnail');
@@ -152,17 +125,6 @@ class BlogPostController extends Controller
             toastr()->error('Something Went Wrong!');
             return redirect()->back();
         }
-
-
-        // Display a success toast with no title
-        // flash()->success('Operation completed successfully.');
-
-        // toastr()->success('Post Created successfully!');
-
-        // toastr()->error('An error has occurred please try again later.');
-
-        // return redirect()->route('single.post',['id' => $post->id]) ; 
-
     }
 
 
@@ -201,6 +163,36 @@ class BlogPostController extends Controller
 
         $validated = $request->validated();
         $post->fill($validated);
+
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $link = $file->store('public/thumbnails');
+           
+
+            if (count($post->image) > 0) {
+               
+                // $path = str_replace('storage','public', );
+                // dd($path) ; 
+                File::delete($post->image[0]->path);
+                $path = str_replace('public', 'storage', $link);
+                $post->image[0]->path = $path;
+                $post->image[0]->save() ; 
+            } else {
+                $path = str_replace('public', 'storage', $link);
+                $post->image()->save(
+                    Image::create([
+                        'path' => $path,
+                        'blog_post_id' => $post->id
+                    ])
+                );
+            }
+        }
+
+
+
+
+
         $done = $post->save();
 
 

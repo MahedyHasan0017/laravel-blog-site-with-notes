@@ -22,7 +22,7 @@
 </div>
 
 <div class="my-3">
-    <input type="file" name="thumbnail" id="title" class="form-control-file" placeholder="upload file">
+    <input type="file" name="thumbnail" id="thumbnail" class="form-control-file" placeholder="upload file">
     <div>
         @error('thumbnail')
 
