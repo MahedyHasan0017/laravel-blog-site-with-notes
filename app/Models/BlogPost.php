@@ -38,7 +38,7 @@ class BlogPost extends Model
     }
 
     public function image(){
-        return $this->hasMany(Image::class) ; 
+        return $this->morphOne(Image::class , 'imageable') ; 
     }
 
 

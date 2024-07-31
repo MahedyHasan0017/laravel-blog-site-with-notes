@@ -1,6 +1,15 @@
-<p> 
-    {{ empty(trim($slot)) ? 'Added in ' : $slot }}  {{ $date->diffForHumans() }} 
+<p>
+    {{ empty(trim($slot)) ? 'Added in ' : $slot }} {{ $date->diffForHumans() }}
     @if (isset($name))
-        by {{ $name }}
-    @endif 
+
+    @if (isset($userId))
+    by <a href="{{ route('users.show',['user' => $userId]) }}">{{ $name }}</a>
+    @else
+    by {{ $name }}
+    @endif
+
+
+
+
+    @endif
 </p>

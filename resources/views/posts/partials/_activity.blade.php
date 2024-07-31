@@ -5,7 +5,7 @@
         <li class="mb-2">
             <span>
                 <h6 class="font-weight-bold">
-                    <a href="./article.html" class="text-dark">{{$author->name}}</a>
+                    <a href="{{ route('users.show',['user' => $author->id]) }}" class="text-dark">{{$author->name}}</a>
                 </h6>
                 <p class="text-muted">
                     {{ $author->blog_post_count }} posts
@@ -25,7 +25,7 @@
         <li class="mb-2">
             <span>
                 <h6 class="font-weight-bold">
-                    <a href="./article.html" class="text-dark">{{$author->name}}</a>
+                    <a href="{{ route('users.show',['user' => $author->id]) }}" class="text-dark">{{$author->name}}</a>
                 </h6>
                 <p class="text-muted">
                     {{ $author->blog_post_count }} posts

@@ -113,7 +113,7 @@ class BlogPostController extends Controller
                 $link = $file->store('public/thumbnails');
                 $path = str_replace('public', 'storage', $link);
                 $post->image()->save(
-                    Image::create([
+                    Image::make([
                         'path' => $path,
                         'blog_post_id' => $post->id
                     ])
@@ -170,18 +170,18 @@ class BlogPostController extends Controller
             $link = $file->store('public/thumbnails');
            
 
-            if (count($post->image) > 0) {
+            if ($post->image) {
                
                 // $path = str_replace('storage','public', );
                 // dd($path) ; 
-                File::delete($post->image[0]->path);
+                File::delete($post->image->path);
                 $path = str_replace('public', 'storage', $link);
-                $post->image[0]->path = $path;
-                $post->image[0]->save() ; 
+                $post->image->path = $path;
+                $post->image->save() ; 
             } else {
                 $path = str_replace('public', 'storage', $link);
                 $post->image()->save(
-                    Image::create([
+                    Image::make([
                         'path' => $path,
                         'blog_post_id' => $post->id
                     ])

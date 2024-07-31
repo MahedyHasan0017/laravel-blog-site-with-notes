@@ -1,0 +1,63 @@
+php artisan make:controller UserController --resource --model=User
+
+this command will create UserController resource with User model Route-model-binding
+
+php artisan make:policy UserPolicy --model=User
+
+now we will define our policy in AuthServiceProvider
+after adding rotue:resource for UserController we will check route:list using
+
+now we will added polimorphic relation because
+images table may have blog-post image
+also may have user image
+we want to store blog post images and user-profile images in our
+one single images table
+
+php artisan make:migration AddPloymorphToImagesTable
+
+creating this table
+and adding columns for this table
+
+public function up(): void
+{
+Schema::table('images', function (Blueprint $table) {
+$table->dropColumn('blog_post_id');
+// $table->unsignedBigInteger('imageable_id');
+// $table->string('imageable_type');
+$table->morphs('imageable');
+})                                                    ;
+}
+
+public function down(): void
+{
+Schema::table('images', function (Blueprint $table) {
+$table->unsignedBigInteger('blog_post_id')->nullable() ;
+$table->dropMorphs('imageable')                        ;
+})                                                     ;
+}
+
+now adding this line
+
+Schema::defaultStringLength(191) ;
+
+in AppServiceProvider inside boot() method
+
+after establish a relation using morph now we should add relational methods to communicate with each other
+
+adding this method to Image.php model
+
+public function imageable(){
+return $this->morphTo()      ;
+}
+
+modifing these methods into BlogPost.php model
+public function image(){
+return $this->morphOne(Image::class , 'imageable') ;
+}
+
+adding these methods to User.php model
+
+public function image()
+{
+return $this->morphOne(Image::class, 'imageable');
+}

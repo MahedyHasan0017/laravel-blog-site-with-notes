@@ -20,7 +20,7 @@
                         {{ $most_popular->content }}
                     </p>
                     <div>
-                        <small class="d-block"><a class="text-muted" href="./author.html">By {{ $most_popular->user->name}}</a></small>
+                        <small class="d-block">By <a href="{{ route('users.show',['user' => $most_popular->user->id]) }}">{{$most_popular->user->name}}</a></small>
                         <small class="text-muted"> {{$most_popular->comments_count}} comments</small>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                                 <div class="card-text text-muted small">
                                     {{ $most_commented->content }}
                                 </div>
-                                <small class="d-block mt-2"><a class="text-muted" href="./author.html">By {{ $most_commented->user->name}}</a></small>
+                                <small class="d-block mt-2"><a class="text-muted" href="{{ route('users.show',['user' => $most_commented->user->id]) }}">By {{ $most_commented->user->name}}</a></small>
                                 <small class="text-muted">{{$most_commented->comments_count}} comments</small>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                     <!-- <p> Added in {{$post->created_at->diffForHumans()}} by {{ $post->user->name }} </p> -->
 
 
-                    @updated(['date' => $post->created_at , 'name' => $post->user->name])
+                    @updated(['date' => $post->created_at , 'name' => $post->user->name , 'userId' => $post->user->id])
                     @endupdated
 
                     @tags(['tags' => $post->tags])

@@ -16,15 +16,17 @@
                         <a class="text-dark" href="{{route('home')}}">
                             {{$post->title}}</a>
                     </h2>
-                    @if (count($post->image) > 0 )
+
+
+                    @if ($post->image)
                     <!-- <div class="my-3" style="width : 280px;">
-                        <img src="http://127.0.0.1:8000/{{$post->image[0]->path}}" class="img-fluid" alt="images">
+                        <img src="http://127.0.0.1:8000/{{$post->image->path}}" class="img-fluid" alt="images">
                     </div> -->
                     <div class="my-3">
-                        <div style="background: url('http://127.0.0.1:8000/{{$post->image[0]->path}}'); width : 280px; height : 340px ; position : center center; background-size : cover ; object-fit : cover ; ">
+                        <div style="background: url('http://127.0.0.1:8000/{{$post->image->path}}'); width : 280px; height : 340px ; position : center center; background-size : cover ; object-fit : cover ; ">
 
                         </div>
-                        <!-- <img src="http://127.0.0.1:8000/{{$post->image[0]->path}}" class="img-fluid" alt="images"> -->
+                        <!-- <img src="http://127.0.0.1:8000/{{$post->image->path}}" class="img-fluid" alt="images"> -->
                     </div>
                     @endif
 
