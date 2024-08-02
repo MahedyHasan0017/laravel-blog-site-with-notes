@@ -1,0 +1,37 @@
+at first we are creating a comments table for morph relation using 
+
+php artisan make:migration AddPolymorphToCommentsTable // command 
+
+now in migration file up method 
+
+ public function up(): void
+    {
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropForeign(['blog_post_id']);
+            $table->dropColumn(['blog_post_id']);
+
+            $table->morphs('commentable');
+        });
+    }
+
+
+
+and down method // if rollback then goto previous format 
+
+
+ public function down(): void
+    {
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropMorphs('commentable');
+            $table->unsignedBigInteger('blog_post_id')->index();
+            $table->foreign('blog_post_id')->references('id')->on('blog_posts');
+        });
+    }
+
+it's time to change in Comment model after morphic modification 
+access methods should be update in Comment model 
+
+modified method code 
+
+
+
